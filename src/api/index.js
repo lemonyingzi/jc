@@ -52,7 +52,7 @@ function apiAxios (method, url, params, success, failure) {
         withCredentials: false
     })
     .then(function (res) {
-    if (res.data.state === "0") {
+    if (Number(res.data.state) === 0) {
         if (success) {
             success(res.data)
         }

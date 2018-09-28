@@ -121,6 +121,17 @@ export const MenuRouter = [
         name: '历史数据',
         component: () => import('@/views/MonitorPoint/MonitorPointProject')
       }]
+    },
+    {
+      path: '/Task',
+      component: Layout,
+      redirect: '/Task/Task',
+      show: false,
+      children: [{
+        path: 'Task',
+        name: '任务',
+        component: () => import('@/views/Task/Task')
+      }]
     }
   ]
 

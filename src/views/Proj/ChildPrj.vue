@@ -19,7 +19,7 @@
       <div style="background:#eeeff2;text-align:left;margin:5px 20px 5px 0;padding-left:10px;font-size:16px;height:40px;line-height:40px;margin-top:60px;position:relative;">详细数据
         <div style="float: right;position: absolute;right:10px;top: -120px">
           <btn :src="src[0]" :url="url[0]" :title="'监测点'"></btn>
-          <btn :src="src[0]" :url="url[1]" :title="'任务'"></btn>
+          <btn :src="src[1]" :url="url[1]" :title="'任务'"></btn>
           <btn :src="src[1]" :url="url[2]" :title="'生成报表'"></btn>
           <btn :src="src[0]" :url="url[3]" :title="'设置'"></btn>
         </div>
@@ -86,7 +86,7 @@ export default {
             require("@/assets/childPrj任务.png"),
             require("@/assets/childPrj生成报表.png"),
             require("@/assets/childPrj设置.png")],
-      src:['../../MonitorPoint/MonitorPoint','../../Report/NewReport']
+      src:['../../MonitorPoint/MonitorPoint','../../Task/Task','../../Report/NewReport']
     }
   },
   components :{
