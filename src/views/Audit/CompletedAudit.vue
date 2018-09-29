@@ -29,36 +29,34 @@
       <el-form v-model="form" label-width="80px" width="700px">
         <el-col :span="12">
           <el-form-item label="分析人员">
-            <el-input v-model="form.Analyst"></el-input>
+            <el-input :disabled="true" v-model="form.Analyst"></el-input>
           </el-form-item>
           <el-form-item label="分析时间">
-            <el-input v-model="form.ReportTime"></el-input>
+            <el-input :disabled="true" v-model="form.ReportTime"></el-input>
           </el-form-item>
           <el-form-item label="工程名称">
-            <el-input v-model="form.ProjectName"></el-input>
+            <el-input :disabled="true" v-model="form.ProjectName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="工程地址">
-            <el-input v-model="form.ProjectAddress"></el-input>
+            <el-input :disabled="true" v-model="form.ProjectAddress"></el-input>
           </el-form-item>
           <el-form-item label="工程编号">
-            <el-input v-model="form.SampleNum"></el-input>
+            <el-input :disabled="true" v-model="form.SampleNum"></el-input>
           </el-form-item>
           <el-form-item label="建设单位">
-            <el-input v-model="form.ConstructUnit"></el-input>
+            <el-input :disabled="true" v-model="form.ConstructUnit"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="审核结果">
-            <el-input v-model="form.AuditResult"></el-input>
-            {{  }}
+            <el-input :disabled="true" v-model="form.AuditResult"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="理由">
-            <el-input v-model="form.Notes"></el-input>
-            {{  }}
+            <el-input :disabled="true" v-model="form.Notes"></el-input>
           </el-form-item>
         </el-col>
       </el-form>

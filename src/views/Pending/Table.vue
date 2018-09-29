@@ -38,10 +38,15 @@
           v.total = r.total
         })
       },
-      cl(a) {
-        this.$router.push({path:'Report/NewReport_datatable',name: '数据报表',params:{id: a.row.reportID}})
-        this.$store.commit('changeType',a.row.mptypeList)
-        sessionStorage.setItem("a",JSON.stringify(a.row.mptypeList));
+      cl(scope) {
+        if(scope.row.type === "生成报表"){
+          this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: scope.row.reportID}})
+          sessionStorage.setItem("a",JSON.stringify(scope.row.mptypeList));
+        }else{
+          this.$router.push({path:'Report/UncompletedAudit',name: '未审核',params:{id: scope.row.reportID}})
+          sessionStorage.setItem("b",scope.row.reportID);
+        }
+        
       },
       handleSizeChange(val) {
         this.params.size = val

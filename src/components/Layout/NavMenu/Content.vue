@@ -8,7 +8,6 @@
             <el-menu-item :index="item.path+'/'+child.path" :key="item.path" v-if="child.show != false">
               <template slot="title">
                 <Icon :className="child.meta.icon"></Icon>
-                <!-- <i class="iconfont icon-jianzhu"></i> -->
                 <span>{{ child.name }}</span>
               </template>
             </el-menu-item>

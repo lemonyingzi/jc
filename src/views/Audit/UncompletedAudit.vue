@@ -141,6 +141,7 @@ export default {
           v.tableData = r.rows
           v.total = Number(r.total)
         })
+        return Promise.resolve()
       },
       audit(f) {
         this.$api.post('audit/unAuditInfoRes',{reportID:this.rowid,result:f,nodes:this.ly},r => {
@@ -179,7 +180,18 @@ export default {
       }
     },
     created () {
-      this.loadData()
+      this.loadData().then(val => {
+        if(sessionStorage.getItem("b") != 0){
+          let s = {
+            row:{
+              id:null
+            }
+          }
+          s.row.id  = sessionStorage.getItem("b")
+          this.ck(s)
+          sessionStorage.setItem("b",0);
+        }
+      })
     }
   }
 </script>
