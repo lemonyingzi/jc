@@ -7,6 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Vuex from 'vuex'
 import store from './store/store'
+import permission from './permission'
 import components from '@/plugins/components.js';
 import api from '@/api/index.js'
 import echarts from 'echarts'

@@ -18,6 +18,17 @@ export const MenuRouter = [
       }]
     },
     {
+      path: '/Login',
+      component: () => import('@/views/Login/Login'),
+      show: false
+      // children: [{
+      //   meta:{icon:'daichuli'},
+      //   path: 'Login',
+      //   name: '登录',
+      //   component: () => import('@/views/Login/Login'),
+      // }]
+    },
+    {
       path: '/Proj',
       component: Layout,
       name: '工程',
@@ -136,6 +147,6 @@ export const MenuRouter = [
   ]
 
 export default new Router({
-  routes: MenuRouter,
-  mode: 'history'
+  routes: MenuRouter
+  // mode: 'history'
 })

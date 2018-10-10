@@ -1,7 +1,7 @@
 const Qs = require('qs');
 // 配置API接口地址
 // var root = 'https://cnodejs.org/api/v1'
-var root = '/mod'
+var root = process.env.API_ROOT//'/mod'
 // 引用axios
 var axios = require('axios')
 // 自定义判断元素类型JS

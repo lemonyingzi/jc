@@ -1,6 +1,6 @@
 <template>
    <div class="icon">
-   	<img :src="url" />
+    <img :src="url" />
    </div>
 </template>
 
@@ -14,8 +14,13 @@ export default {
 </script>
 
 <style scoped>
+    .icon:hover {
+      cursor: pointer;
+      opacity: 1
+    }
     .icon {
-    	margin-right: 25px;
+      margin-right: 25px;
+      opacity: .6
     }
 </style>
 

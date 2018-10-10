@@ -48,6 +48,7 @@ export default {
      height: 100%;
    }*/
    .HeaderRight {
+      min-width: 300px;
       height: 100%;
       justify-content: flex-end;
       display: flex;

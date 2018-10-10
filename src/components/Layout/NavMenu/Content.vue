@@ -13,7 +13,7 @@
             </el-menu-item>
           </router-link>
         </template>
-      </el-submenu>  
+      </el-submenu> 
       <template v-else-if="item.children.length<=1&&item.show != false">
         <template v-for="child in item.children">
           <el-menu-item :index="item.path+'/'+child.path" :key="item.path">
