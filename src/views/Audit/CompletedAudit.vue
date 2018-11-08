@@ -73,7 +73,7 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         total: null,
         columns: [{"prop":"prjName","label":"工程名称"},
@@ -133,6 +133,7 @@ export default {
               type: 'success',
               message: '撤回成功!'
             });
+            this.loadData()
           })
         }).catch(() => {
           this.$message({

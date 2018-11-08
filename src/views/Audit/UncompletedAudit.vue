@@ -72,6 +72,7 @@
         </el-col>
       </el-form>
       <div style="text-align: center;">
+        <el-button @click="ckbb()" type="success">查看报表</el-button>
         <el-button @click="pz()" type="success">批准</el-button>
         <el-button @click="bh()" type="danger">驳回</el-button>
       </div>
@@ -85,7 +86,7 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         total: null,
         dialogVisible:false,
@@ -115,7 +116,8 @@ export default {
           ConstructUnit: ''
         },
         result:'',
-        rowid:''
+        rowid:'',
+        mptypeList:[]
       }
     },
     computed: {
@@ -153,8 +155,11 @@ export default {
         })
       },
       ck(scope) {
+        this.value = []
+        this.textarea = ""
         this.rowid = scope.row.id
         this.$api.post('audit/unAuditInfo',{reportID:scope.row.id},r => {
+          this.mptypeList = r.mptypeList
           this.dialogVisible = true
           this.form.Analyst = r.reportInfo.Analyst
           this.form.ReportTime = r.reportInfo.ReportTime
@@ -177,11 +182,16 @@ export default {
       handleCurrentChange (val){
         this.params.page = val
         this.loadData()
+      },
+      ckbb() {
+        this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: this.rowid}})
+        sessionStorage.setItem("a",JSON.stringify(this.mptypeList))
+        sessionStorage.setItem("c",JSON.stringify({flag:false,page:true}))
       }
     },
     created () {
       this.loadData().then(val => {
-        if(sessionStorage.getItem("b") != 0){
+        if(sessionStorage.getItem("b") != 0&&sessionStorage.getItem("b") != null){
           let s = {
             row:{
               id:null

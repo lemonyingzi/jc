@@ -93,7 +93,7 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         switch1:'',
         total: null,

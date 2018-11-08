@@ -1,4 +1,4 @@
-<template>
+<template ref="mark">
   <div id="title">
     <slot></slot>
   </div>
@@ -6,7 +6,12 @@
 
 <script>
 export default {
-  name:'Title'
+  name:'Title',
+  mounted() {
+    this.$nextTick(function(){
+      document.title =  this.$el.innerHTML
+    })
+  }
 }
 
 </script>

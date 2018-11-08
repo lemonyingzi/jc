@@ -4,12 +4,12 @@
     <el-row :gutter="40">
       <el-col :xs="24" :sm="24" :lg="24">
         <div>
-          <el-table :data="tableData" stripe style="width: 100%">
+          <el-table :sort-orders="['ascending', 'descending']" :default-sort = "{prop: 'prjState', order: 'ascending'}" :data="tableData" stripe style="width: 100%">
             <el-table-column type="index" label="序号" min-width="160"></el-table-column>
-            <el-table-column prop="prjState" label="状态" min-width="100"></el-table-column>
+            <el-table-column :sort-by="['在线，正常','在线，异常','离线，正常','离线，异常']" :sortable="true"  prop="prjState" label="状态" min-width="100"></el-table-column>
             <el-table-column prop="ProjectName" label=" 
   工程名称" min-width="100"></el-table-column>
-            <el-table-column prop="ProjectID" label="工程编号" min-width="100" max-width="20"></el-table-column>
+            <el-table-column prop="SampleNum" label="工程编号" min-width="100" max-width="20"></el-table-column>
             <el-table-column prop="ConstructUnit" label=" 
   建设单位" min-width="100" max-width="20"></el-table-column>
             <el-table-column prop="StartTime" label="开始时间 
@@ -36,7 +36,7 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         total: null,
       }
@@ -54,7 +54,7 @@ export default {
         })
       },
       cz(a) {
-        this.$router.push({path: 'ChildPrj',name:'工程首页', params: {id:a.row.id,title:a.row.ProjectName}})
+        this.$router.push({path: 'ChildPrj',name:'工程首页'})
         this.$store.commit('changePrjID',a.row.ProjectID)
       },
       handleSizeChange(val) {

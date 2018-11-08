@@ -36,7 +36,8 @@
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="params.page" :page-sizes="[10,20,30, 50]" :page-size="params.rows" layout="total, sizes, prev, pager, next, jumper" :total="Number(total)">
             </el-pagination>
           </div>
-          <el-button style="margin-top: 20px;float: right;" type="success" @click="save">保存报表</el-button>
+          <el-button v-if="btnFlag" style="margin-top: 20px;margin-left: 20px; float: right;" type="success" @click="upload()">提交审核</el-button>
+          <el-button v-if="this.value !== '深层水平位移'" style="margin-top: 20px;float: right;" type="success" @click="save()">保存报表</el-button>
         </div>
       </el-col>
     </el-row>
@@ -51,7 +52,7 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         changeRowArr:[],
         total: null,
@@ -79,14 +80,13 @@ export default {
                 title: "液压水准监测点数据汇总",
                 columns: [
                     { field: 'MonitorPointPart', title: '测点部位', width: '60' },
-                    { field: 'MeasureNetworkNum', title: '测量网络编号', width: '80' },
                     { field: 'MeasurePointNum', title: '测点编号', width: '80' },
                     { field: 'TheLastMeasurementDate', title: '上次测试时间', width: '100' },
-                    { field: 'TheLastTotalSedimentation', title: '上次累计沉降量', width: '100' },
+                    { field: 'TheLastTotalSedimentation', title: '上次累计沉降量(mm)', width: '100' },
                     { field: 'ThisMeasurementDate', title: '本次测试时间', width: '150',editor:true},
-                    { field: 'ThisTotalSedimentation', title: '本次累计沉降量', width: '100' },
-                    { field: 'ThisSedimentation', title: '本次沉降量', width: '100' },
-                    { field: 'ThisSedimentationRate', title: '本次沉降速率', width: '100' },
+                    { field: 'ThisTotalSedimentation', title: '本次累计沉降量(mm)', width: '100' },
+                    { field: 'ThisSedimentation', title: '本次沉降量(mm)', width: '100' },
+                    { field: 'ThisSedimentationRate', title: '本次沉降速率(mm/d)', width: '100' },
                     { field: 'Notes', title: '备注', width: '100' }
                 ],
                 src: "NewReport_detail",
@@ -98,12 +98,12 @@ export default {
                     { field: 'MonitorPointPart', title: '测点部位', width: '100' },
                     { field: 'MeasurePointNum', title: '测点编号', width: '100' },
                     { field: 'TheLastMeasureDate', title: '上次测试时间', width: '100' },
-                    { field: 'TheLastMaxTotalChanges', title: '上次累计最大水平位移', width: '100' },
+                    { field: 'TheLastMaxTotalChanges', title: '上次累计最大水平位移(mm)', width: '100' },
                     { field: 'ThisMeasureDate', title: '本次测试时间', width: '100' },
-                    { field: 'ThisMaxChanges', title: '本次最大水平位移', width: '100' },
-                    { field: 'ThisMaxTotalChanges', title: '本次累计最大水平位移', width: '100' },
-                    { field: 'ThisMaxChangesDepth', title: '本次相应位移深度', width: '100' },
-                    { field: 'ThisMaxTotalChangesDepth', title: '本次最大相应位移深度', width: '100' },
+                    { field: 'ThisMaxTotalChanges', title: '本次累计最大水平位移(mm)', width: '100' },
+                    { field: 'ThisMaxTotalChangesDepth', title: '相应位移深度(m)', width: '100' },
+                    { field: 'ThisMaxChanges', title: '本次最大水平位移增量(mm)', width: '100' },
+                    { field: 'ThisMaxChangesDepth', title: '相应位移深度(m)', width: '100' },
                     { field: 'Notes', title: '备注', width: '100' }
                 ],
                 src: "NewReport_detail_DHD",
@@ -147,7 +147,10 @@ export default {
     },
     methods: {
       rowDblclick(row, event) {
-        this.$router.push({path:'Report/'+this.columns[this.value].src,name: this.columns[this.value].name })
+        this.$router.push({
+          path:'Report/'+this.columns[this.value].src,
+          name: this.columns[this.value].name
+        })
         sessionStorage.setItem("table",JSON.stringify(row));
         sessionStorage.setItem("type",this.value);
       },
@@ -161,6 +164,8 @@ export default {
         }
       },
       toggle(scope,data) {
+        if(this.$route.params.page === false)
+          return
         if(!this.changeRowArr.includes(scope.$index)){
           this.changeRowArr.push(scope.$index)
         }
@@ -201,6 +206,15 @@ export default {
           });
         })
       },
+      upload() {
+        this.$api.post('report/submitAudit', {reportID:this.$route.params.id}, r => {
+          this.loadData()
+          this.$message({
+            type: 'success',
+            message: '上传成功'
+          });
+        })
+      },
       loadData() {
         this.changeRowArr = []
         var v = this
@@ -225,6 +239,11 @@ export default {
       handleCurrentChange (val){
         this.params.page = val
         this.loadData()
+      }
+    },
+    computed: {
+      btnFlag() {
+        return JSON.parse(sessionStorage.getItem("c")).flag
       }
     },
     activated () {

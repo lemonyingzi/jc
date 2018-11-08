@@ -3,26 +3,27 @@
 		<img style="height:240px;width:200px;margin-top: 150px;" src="@/assets/登录界面LOGO.png" />
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm" style="max-width: 400px;
             margin:0 auto;
-		    position: absolute;
 		    left: 0;
 		    right: 0;
 		    padding: 35px 35px 15px 35px;">
 		    <el-form-item prop="username">
-			    <el-input type="username" v-model="ruleForm2.username" auto-complete="off" placeholder="用户名"></el-input>
+			    <el-input type="username" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.username" auto-complete="off" placeholder="用户名"></el-input>
 			</el-form-item>
 			<el-form-item prop="pass">
-			  <el-input type="password" v-model="ruleForm2.pass" auto-complete="off" placeholder="密码"></el-input>
+			  <el-input type="password" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.pass" auto-complete="off" placeholder="密码"></el-input>
 			</el-form-item>
-				<el-col :span="18">
-					<el-form-item prop="validate">
-					    <el-input type="validate" v-model="ruleForm2.validate" auto-complete="off" placeholder="验证码"></el-input>
-				    </el-form-item>
-				</el-col>
-				<el-col :span="5" :offset="1">
-				    <el-form-item>
-						<img>
-				    </el-form-item>
-				</el-col>
+			<el-form-item>
+			<el-col :span="16">
+				<el-form-item prop="validate">
+				    <el-input type="validate" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.validate" auto-complete="off" placeholder="验证码"></el-input>
+			    </el-form-item>
+			</el-col>
+			<el-col :span="7" :offset="1">
+			    <el-form-item>
+					<img class="validateImg" :src="imgSrc" @click="loadImg()">
+			    </el-form-item>
+			</el-col>
+			</el-form-item>
 			<el-form-item>
 			  <el-button style="width: 100%;" type="primary" @click="submitForm('ruleForm2')">登录</el-button>
 			</el-form-item>
@@ -30,15 +31,14 @@
 	</div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import crypto from 'crypto'
   export default {
     data() {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
         } else {
-          // if (this.ruleForm2.checkPass !== '') {
-          //   this.$refs.ruleForm2.validateField('checkPass');
-          // }
           callback();
         }
       };
@@ -49,7 +49,6 @@
           callback();
         }
       };
-      
       var validatePass3 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入验证码'));
@@ -73,20 +72,45 @@
           validate: [
             { validator: validatePass3, trigger: 'blur' }
           ]
-        }
+        },
+        imgSrc:null
       };
     },
+    computed :{
+      ...mapGetters([
+        'prjID'
+      ])
+    },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('登录成功!');
-          } else {
-            console.log('登陆失败!!');
-            return false;
-          }
-        });
-      }
+	    submitForm(formName) {
+        console.log(this.$refs)
+	        this.$refs[formName].validate((valid) => {
+	          if (valid) {
+                this.load()
+	          } else {
+	            return false;
+	          }
+	        });
+	    },
+	    loadImg() {
+	    	this.$api.post('login', {flag: 'ValidationNum'}, r => {
+	            this.imgSrc = "data:image/jpeg;base64," + r.imageData
+	        })
+	    },
+	    load() {
+	    	var md5 = crypto.createHash("md5");
+            md5.update(this.ruleForm2.pass)
+            var mm = md5.digest("hex")
+	    	this.$api.post('login', {flag: 'Login',zh:this.ruleForm2.username,mm:mm,yz:this.ruleForm2.validate}, r => {
+                this.$router.push({path: '/Pending',name: '待处理' })
+	        },f => {
+	        	alert(f.result)
+	        })
+	    }
+    },
+    created() {
+      this.$store.commit('changePrjID',null)
+    	this.loadImg()
     }
   }
 </script>

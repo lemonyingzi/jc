@@ -1,11 +1,5 @@
 <template>
   <div class="menu-wrapper">
-    <el-menu-item :index="'0'">
-      <template slot="title">
-        <i class="el-icon-location"></i>
-        <span>{{ MenuRouter.title }}</span>
-      </template>
-    </el-menu-item>
     <template v-for="item in jcd">
       <el-submenu v-if="item.children" :index="item.id" :key="item.id">
         <template slot="title">{{item.title}}</template>
@@ -15,7 +9,7 @@
               <span>{{ child.title }}</span>
             </template>
             <template v-for="(childn,index) in child.children" >
-              <router-link :key="childn.mpID" :to="'/MonitorPoint/MonitorPointProject/'+child.title+'/'+(index+1)+'/'+childn.mpID">
+              <router-link :key="childn.mpID" :to="'/MonitorPoint/MonitorPointProject/'+child.title+'/'+childn.title+'/'+childn.mpID">
                 <el-menu-item  :index="childn.mpID" v-if="child.children">
                   <template slot="title">
                     <span>{{ childn.title }}</span>
@@ -41,27 +35,31 @@
         </el-menu-item>
       </template>
     </template>
-    <el-menu-item index="'-1'">
-      <template slot="title">
-        <span>任务</span>
-      </template>
-    </el-menu-item>
+    <router-link :to="'/Task/Task'">
+      <el-menu-item index="'-1'">
+        <template slot="title">
+          <span>任务</span>
+        </template>
+      </el-menu-item>
+    </router-link>
     <el-submenu index="'-4'">
       <template slot="title">
-          <span>报表</span>
-        </template>
-        <router-link :to="'/Report/NewReport'">
-      <el-menu-item index="'-2'">
+        <span>报表</span>
+      </template>
+      <router-link :to="'/Report/NewReport'">
+        <el-menu-item index="'-2'">
+            <template slot="title">
+              <span>新增报表</span>
+            </template>
+        </el-menu-item>
+      </router-link>
+      <router-link :to="'/Report/HistoryReport'">
+        <el-menu-item index="'-3'">
           <template slot="title">
-            <span>新增报表</span>
+            <span>历史报表</span>
           </template>
-      </el-menu-item>
-        </router-link>
-      <el-menu-item index="'-3'">
-        <template slot="title">
-          <span>历史报表</span>
-        </template>
-      </el-menu-item>
+        </el-menu-item>
+      </router-link>
     </el-submenu>
   </div>  
 </template>
@@ -87,6 +85,7 @@ export default {
         v.MenuRouter = r.PrjMenu[0];
         v.jcd = [];
         v.jcd.push(r.PrjMenu[0].children[0]) 
+        v.$emit('projectName',r.PrjMenu[0])
       })
     }
   },

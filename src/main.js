@@ -11,6 +11,7 @@ import permission from './permission'
 import components from '@/plugins/components.js';
 import api from '@/api/index.js'
 import echarts from 'echarts'
+import 'babel-polyfill'
 
 Vue.prototype.$api = api
 Vue.prototype.$echarts = echarts 

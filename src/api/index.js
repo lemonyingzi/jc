@@ -60,15 +60,15 @@ function apiAxios (method, url, params, success, failure) {
         if (failure) {
             failure(res.data)
         } else {
-            window.alert('error: ' + JSON.stringify(res.data))
+            window.alert('错误: ' + JSON.stringify(res.data))
         }
     }
     })
     .catch(function (err) {
         let res = err.response
-        if (err) {
-            window.alert('api error, HTTP CODE: ' + res.status)
-        }
+        // if (err) {
+        //     window.alert('错误: ' + res.status)
+        // }
     })
 }
  

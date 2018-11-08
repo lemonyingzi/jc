@@ -41,7 +41,8 @@
       cl(scope) {
         if(scope.row.type === "生成报表"){
           this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: scope.row.reportID}})
-          sessionStorage.setItem("a",JSON.stringify(scope.row.mptypeList));
+          sessionStorage.setItem("a",JSON.stringify(scope.row.mptypeList))
+          sessionStorage.setItem("c",JSON.stringify({flag:true,page:true}))
         }else{
           this.$router.push({path:'Report/UncompletedAudit',name: '未审核',params:{id: scope.row.reportID}})
           sessionStorage.setItem("b",scope.row.reportID);
