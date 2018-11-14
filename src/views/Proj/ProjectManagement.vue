@@ -68,7 +68,7 @@
                   v-for="(item,index) in auditorOptions"
                   :key="index"
                   :label="item"
-                  :value="index">
+                  :value="item">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -319,6 +319,7 @@ export default {
       }else{
         a.data.ReportTime = '每周,'+this.week
       }
+      a.data.AuditAccess = a.data.AuditAccess === true?'是':'否'
       a.data.Analyst = this.Analyst.join(',')
       a.data.Audit = this.Audit.join(',')
       a.data = JSON.stringify(a.data)
@@ -327,6 +328,7 @@ export default {
           message: this.title === '新建工程'?'新建成功':'修改成功',
           type: 'success'
         });
+        this.loadData()
       })
     }
   },

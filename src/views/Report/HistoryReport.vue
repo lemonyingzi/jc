@@ -54,9 +54,10 @@ export default {
         })
       },
       ck(a) {
-        this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: a.row.reportID}})
         sessionStorage.setItem("a",JSON.stringify(a.row.mptypeList))
+        //c表示进入了历史报表 ，不可以提交审核,不可以修改、保存报表
         sessionStorage.setItem("c",JSON.stringify({flag:false,page:false}))
+        this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: a.row.reportID}})
       },
       handleSizeChange(val) {
         this.params.rows = val

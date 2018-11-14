@@ -4,13 +4,23 @@
         <img src="@/assets/LOGO.png" />
     </div>
       <div style="height: 60px;text-align: left;line-height: 60px;padding-left:20px;cursor: pointer;background: #284a5c"><span style="vertical-align: middle;color: #fff">{{ title }}</span></div>
-      <el-menu
-        default-active="2"
-        background-color="#efeff3"
-        text-color="#000"
-        active-text-color="#293c5c">
-        <Content v-on:projectName="addName"></Content>
-      </el-menu>
+      <div class="zy-main">
+              <el-scrollbar>
+          <!--以下是要滚动的内容-->
+          <div class="zy-main__box">
+            <transition name="move" mode="out-in">
+              <el-menu
+            :unique-opened=true
+            default-active="2"
+            background-color="#efeff3"
+            text-color="#000"
+            active-text-color="#293c5c">
+            <Content v-on:projectName="addName"></Content>
+          </el-menu>
+            </transition>
+          </div>
+        </el-scrollbar>
+          </div>
    </div>
 </template>
 
@@ -39,5 +49,17 @@ export default {
       min-width: 250px;
       background: #efeff3;
     }
+
+.zy-main {
+  height: 100%;
+  /*overflow: hidden;*/
+}
+.el-scrollbar{
+  height: 100%;
+}
+.el-scrollbar__wrap{
+  overflow: scroll;
+  /*overflow-x:auto*/
+}
 </style>
 

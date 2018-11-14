@@ -7,7 +7,7 @@
           <el-table :data="tableData" stripe style="width: 100%">
             <el-table-column type="index" label="序号" min-width="160"></el-table-column>
             <template v-for="column in columns">
-              <el-table-column min-width="100" :prop='column.prop' :label='column.label'></el-table-column>
+              <el-table-column :key="column.label" min-width="100" :prop='column.prop' :label='column.label'></el-table-column>
             </template>
             <el-table-column prop="AuditResult" label="审核结果" min-width="100">
             </el-table-column>

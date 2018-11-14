@@ -26,7 +26,7 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         total: null,
         multipleSelection: []
@@ -65,7 +65,11 @@ export default {
           this.$message({
             type: 'success',
             message: '报表生成成功'
-          }); 
+          });
+          //直接跳转到数据汇总
+          this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: r.reportID}})
+          sessionStorage.setItem("a",p)
+          sessionStorage.setItem("c",JSON.stringify({flag:true,page:true}))
         })
       },
       handleSelectionChange(val) {

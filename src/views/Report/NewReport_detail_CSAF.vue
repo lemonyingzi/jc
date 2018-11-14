@@ -88,7 +88,7 @@
             </el-pagination>
           </div>
           <div style="margin-top: 20px;float: right;">
-            <el-button type="success" @click="search">保存数据分析并返回</el-button>
+            <el-button v-if="saveFlag" type="success" @click="search">保存数据分析并返回</el-button>
             <el-button @click="search">取消</el-button>
             <el-button @click="search">导出ECXEL</el-button>
           </div>
@@ -281,7 +281,7 @@ export default {
         }
       },
       toggle(scope,data) {
-        if(scope.row.MeasureDate < this.tableData[0].TheLastMeasurementDate||JSON.parse(sessionStorage.getItem("c")).page){
+        if(scope.row.MeasureDate < this.tableData[0].TheLastMeasurementDate&&saveFlag){
           return false
         }
         scope.row.editable = !scope.row.editable
@@ -339,6 +339,11 @@ export default {
     },
     mounted(){
       this.drawLine()
+    },
+    computed:{
+      saveFlag() {
+        return JSON.parse(sessionStorage.getItem("c")).page
+      }
     },
     created () {
       const end = new Date()

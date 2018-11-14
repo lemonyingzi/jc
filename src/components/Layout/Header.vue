@@ -8,7 +8,7 @@
         <div v-on:click="User()">
           <Icon :url="src[1]"></Icon>
         </div>
-        <div v-on:click="dialogVisible = !dialogVisible">
+        <div v-on:click="Setting()">
           <Icon :url="src[2]"></Icon>
         </div>
         <div v-on:click="Login()">
@@ -20,14 +20,14 @@
         <el-col :span="12">
           <el-form-item label="默认使用审批功能">
             <el-switch
-              v-model="form.ProjectName"
+              v-model="form.prjAuditAccess"
               active-color="#13ce66"
               inactive-color="#ff4949">
             ></el-switch>
           </el-form-item>
           <el-form-item label="默认使用审核功能">
             <el-switch
-              v-model="form.ProjectName"
+              v-model="form.userAuditAccess"
               active-color="#13ce66"
               inactive-color="#ff4949">
             ></el-switch>
@@ -36,7 +36,7 @@
         <el-col :span="12">
           <el-form-item label="默认使用工程管理功能">
             <el-switch
-              v-model="form.ProjectName"
+              v-model="form.userManageAccess"
               active-color="#13ce66"
               inactive-color="#ff4949">
             ></el-switch>
@@ -44,7 +44,7 @@
         </el-col>
         <div style="clear: both;"></div>
         <div style="text-align: center;overflow: auto">
-          <el-button @click="bh()" type="success">确认</el-button>
+          <el-button @click="qr()" type="success">确认</el-button>
         </div>
       </el-form>
     </el-dialog>
@@ -73,7 +73,9 @@ export default {
 	          require("@/assets/quit.png")
       ],
       form: {
-        ProjectName:""
+        prjAuditAccess:true,
+        userAuditAccess:true,
+        userManageAccess:true
       },
       dialogVisible:false
   	}
@@ -87,6 +89,29 @@ export default {
     },
     User() {
       this.$router.push({path: 'User',name:'用户'})
+    },
+    Setting() {
+      this.dialogVisible = !this.dialogVisible
+      var v = this
+      this.$api.post('/user/sysSetting',{flag:'get'},r => {
+        this.form.prjAuditAccess = r.data.prjAuditAccess === "0"?false:true,
+        this.form.userAuditAccess = r.data.userAuditAccess === "0"?false:true,
+        this.form.userManageAccess = r.data.userManageAccess === "0"?false:true
+      })
+    },
+    qr() {
+      var p = {
+        flag:'update',
+        data:{
+          prjAuditAccess:this.form.prjAuditAccess === false?"0":"1",
+          userAuditAccess:this.form.userAuditAccess === false?"0":"1",
+          userManageAccess:this.form.userManageAccess === false?"0":"1"
+        }
+      }
+      p.data = JSON.stringify(p.data)
+      this.$api.post('/user/sysSetting',p,r => {
+        this.dialogVisible = !this.dialogVisible
+      })
     }
   }
 }

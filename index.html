@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
-    <title>jc</title>
+    <title>智能基坑安全监测系统</title>
   </head>
   <body>
     <div id="app"></div>
@@ -12,9 +12,19 @@
   </body>
 </html>
 <script type="text/javascript">
-	var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-  var isOpera = userAgent.indexOf("Opera") > -1;
-	if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
-        alert("本系统不支持IE8及以下版本的IE浏览器，推荐使用谷歌浏览器");
-    };
+  var DEFAULT_VERSION = 8.0;  
+    var ua = navigator.userAgent.toLowerCase();  
+    var isIE = ua.indexOf("msie")>-1;  
+    var safariVersion;  
+    if(isIE){  
+    safariVersion =  ua.match(/msie ([\d.]+)/)[1];  
+    }  
+    if(safariVersion <= DEFAULT_VERSION ){  
+      alert('系统检测到您正在使用ie8以下内核的浏览器，不能实现完美体验，推荐使用谷歌浏览器！')
+    }; 
+	// var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+ //  var isOpera = userAgent.indexOf("Opera") > -1;
+	// if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+ //    alert("本系统不支持IE8及以下版本的IE浏览器，推荐使用谷歌浏览器");
+ //  };
 </script>

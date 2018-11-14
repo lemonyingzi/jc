@@ -148,10 +148,11 @@ export default {
       audit(f) {
         this.$api.post('audit/unAuditInfoRes',{reportID:this.rowid,result:f,nodes:this.ly},r => {
           this.$message({
-            message: '恭喜你，这是一条成功消息',
+            message: '提交成功',
             type: 'success'
           });
           this.dialogVisible = false
+          this.loadData()
         })
       },
       ck(scope) {

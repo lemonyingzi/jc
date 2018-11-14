@@ -8,14 +8,14 @@
             <template slot="title">
               <span>{{ child.title }}</span>
             </template>
-            <template v-for="(childn,index) in child.children" >
+            <template v-for="childn in child.children" >
               <router-link :key="childn.mpID" :to="'/MonitorPoint/MonitorPointProject/'+child.title+'/'+childn.title+'/'+childn.mpID">
                 <el-menu-item  :index="childn.mpID" v-if="child.children">
                   <template slot="title">
                     <span>{{ childn.title }}</span>
                   </template>
                 </el-menu-item>
-            </router-link>
+              </router-link>
             </template>
           </el-submenu>
           <template v-else>

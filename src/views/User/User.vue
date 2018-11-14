@@ -77,7 +77,6 @@
         <div style="clear: both;"></div>
         <div style="text-align: center;overflow: auto">
           <el-button @click="qr()" type="success">确认</el-button>
-          <!-- <el-button @click="pz()" type="danger">取消</el-button> -->
         </div>
       </el-form>
     </el-dialog>
@@ -116,7 +115,6 @@
         <div style="clear: both;"></div>
         <div style="text-align: center;overflow: auto">
           <el-button @click="submitForm2('form2')" type="success">确认</el-button>
-         <!--  <el-button @click="pz()" type="danger">取消</el-button> -->
         </div>
       </el-form>
     </el-dialog>
@@ -391,6 +389,41 @@ export default {
           })
         })
         this.dialog1Visible = false
+      },
+      //删除
+      sc() {
+        this.$confirm('此操作将删除该用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var p = {
+            flag:'delete',
+            data:{}
+          }
+          p.data.tableName = this.tableName
+          p.data.id = this.id
+          p.data = JSON.stringify(p.data)
+          this.$api.post('user/editUser', p, r => {
+            if(r.state == 0){
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }
+          },f => {
+            this.$message({
+              type: 'info',
+              message: f.errorInfo
+            })
+          })
+          this.dialogVisible = false
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });          
+          });
       }
     },
     created () {

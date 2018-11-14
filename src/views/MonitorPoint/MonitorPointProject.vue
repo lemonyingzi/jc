@@ -341,23 +341,38 @@ export default {
         }
       },
       btn(type) {
-        var p = {type:type}
-        var _this = this
-        if(type === 'DataAcquisition' || type === 'ReturnZero'){
-          p.data = 'Type' + this.$route.params.title + 'DeviceID' + this.mpInfos.did.value + 'MeasurePointNum' + this.mpInfos.mpn.value
-        }else{
-          if(this.$route.params.title === '水位'){
-            p.data = 'Type' + this.$route.params.title + 'DeviceID' + this.mpInfos.did.value + 'NewMeasurePointNum' + this.mpInfos.mpn.value + 'WaterNozzleHeight' + this.mpInfos.nozzleHeight.value
-          }else if(this.$route.params.title === '液压水准' || this.$route.params.title === '深层水平位移'){
-            p.data = 'Type' + this.$route.params.title + 'DeviceID' + this.mpInfos.did.value + 'NewMeasurePointNumber' + this.mpInfos.mpn.value + 'SenorNumber' + this.mpInfos.snum.value
+        this.$confirm('是否确定执行?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var p = {type:type}
+          var _this = this
+          if(type === 'DataAcquisition' || type === 'ReturnZero'){
+            p.data = 'Type' + this.$route.params.title + 'DeviceID' + this.mpInfos.did.value + 'MeasurePointNum' + this.mpInfos.mpn.value
+          }else{
+            if(this.$route.params.title === '水位'){
+              p.data = 'Type' + this.$route.params.title + 'DeviceID' + this.mpInfos.did.value + 'NewMeasurePointNum' + this.mpInfos.mpn.value + 'WaterNozzleHeight' + this.mpInfos.nozzleHeight.value
+            }else if(this.$route.params.title === '液压水准' || this.$route.params.title === '深层水平位移'){
+              p.data = 'Type' + this.$route.params.title + 'DeviceID' + this.mpInfos.did.value + 'NewMeasurePointNumber' + this.mpInfos.mpn.value + 'SenorNumber' + this.mpInfos.snum.value
+            }
           }
-        }
-        this.$api.post('monitorPoint/remoteCtrl', p, r => {
-          if(type === 'ParaSetting'){
-            _this.loadData()
-            _this.dialogVisible3 = false
-          }
-        })
+          this.$api.post('monitorPoint/remoteCtrl', p, r => {
+            this.$message({
+              type: 'success',
+              message: '执行成功!'
+            })
+            if(type === 'ParaSetting'){
+              _this.loadData()
+              _this.dialogVisible3 = false
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
       }
     },
     created () {
