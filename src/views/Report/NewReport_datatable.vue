@@ -47,6 +47,7 @@
 export default {
     data() {
       return {
+        dbClickFalse:false,
         date: [],
         value6: '',
         tableData: [],
@@ -208,7 +209,6 @@ export default {
       },
       upload() {
         this.$api.post('report/submitAudit', {reportID:this.$route.params.id}, r => {
-          // this.loadData()
           this.$message({
             type: 'success',
             message: '上传成功'

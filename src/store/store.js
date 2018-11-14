@@ -9,13 +9,15 @@ export default new Vuex.Store({
    	MenuRouter,
    	prjID:null,
     ID:null,
-    Type:[]
+    Type:[],
+    dbClickFalse:false
   },
   getters :{
    	MenuRouter :state => state.MenuRouter,
     prjID :state => state.prjID,
     ID :state => state.ID,
-    Type :state => state.Type
+    Type :state => state.Type,
+    dbClickFalse :state => state.dbClickFalse,
   },
   mutations :{
     changePrjID(state, prjID) {
@@ -26,6 +28,9 @@ export default new Vuex.Store({
     },
     changeID(state, ID) {
       state.ID = ID
+    },
+    changeDbClickFalse(state) {
+      state.dbClickFalse = !state.dbClickFalse
     }
   }
 })

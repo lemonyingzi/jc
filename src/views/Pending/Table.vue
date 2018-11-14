@@ -39,6 +39,7 @@
         })
       },
       cl(scope) {
+        this.$store.commit('changePrjID',scope.row.prjID)
         if(scope.row.type === "生成报表"){
           this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: scope.row.reportID}})
           sessionStorage.setItem("a",JSON.stringify(scope.row.mptypeList))
@@ -47,7 +48,6 @@
           this.$router.push({path:'Report/UncompletedAudit',name: '未审核',params:{id: scope.row.reportID}})
           sessionStorage.setItem("b",scope.row.reportID);
         }
-        
       },
       handleSizeChange(val) {
         this.params.size = val

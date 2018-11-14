@@ -12,8 +12,9 @@
           <Icon :url="src[2]"></Icon>
         </div>
         <div v-on:click="Login()">
-          <Icon style="margin-left: 50px" :url="src[3]"></Icon></div>
+          <Icon style="margin-left: 50px" :url="src[3]"></Icon>
         </div>
+      </div>
     </el-header>
     <el-dialog title="设置" :visible.sync="dialogVisible" width="700px">
       <el-form v-model="form" label-width="200px" width="700px">
@@ -82,7 +83,9 @@ export default {
   },
   methods:{
     Login() {
-      this.$router.push({path: 'Login',name:'登录'})
+      this.$api.get('/logout',{},r => {
+        this.$router.push({path: 'Login',name:'登录'})
+      })
     },
     Homepage() {
       this.$router.push({path: 'ChildPrj',name:'工程首页'})

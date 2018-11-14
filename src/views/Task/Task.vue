@@ -262,7 +262,7 @@ export default {
             this.loadData()
             this.$message({
               type: 'success',
-              message: '删除成功!'
+              message: '删除任务指令已发送至远程服务器，等耐心等待!'
             })
           });
         }).catch(() => {
@@ -308,6 +308,10 @@ export default {
         this.$api.post('/task/taskCtrl',p,r => {
           this.dialogVisible = !this.dialogVisible
           this.loadData()
+          this.$message({
+            type: 'success',
+            message: '指令已发送至远程服务器，等耐心等待'
+          });
         })
       }
     },

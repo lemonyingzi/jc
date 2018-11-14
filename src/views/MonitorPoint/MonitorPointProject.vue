@@ -370,7 +370,7 @@ export default {
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: '已取消操作'
           });          
         });
       }

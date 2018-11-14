@@ -1,33 +1,37 @@
 <template>
-	<div style="text-align: center;background: linear-gradient(to right,#22496d 0,#212147 100%);min-height: 100%;">
-		<img style="height:240px;width:200px;margin-top: 150px;" src="@/assets/登录界面LOGO.png" />
+	<div style="text-align: center;background: linear-gradient(to right,#22496d 0,#212147 100%);min-height: 100%;display:flex;justify-content:center;align-items:center;">
+		<div>
+        <img style="height:240px;width:200px;" src="@/assets/登录界面LOGO.png" />
         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm" style="max-width: 400px;
-            margin:0 auto;
-		    left: 0;
-		    right: 0;
-		    padding: 35px 35px 15px 35px;">
-		    <el-form-item prop="username">
-			    <el-input type="username" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.username" auto-complete="off" placeholder="用户名"></el-input>
-			</el-form-item>
-			<el-form-item prop="pass">
-			  <el-input type="password" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.pass" auto-complete="off" placeholder="密码"></el-input>
-			</el-form-item>
-			<el-form-item>
-			<el-col :span="16">
-				<el-form-item prop="validate">
-				    <el-input type="validate" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.validate" auto-complete="off" placeholder="验证码"></el-input>
-			    </el-form-item>
-			</el-col>
-			<el-col :span="7" :offset="1">
-			    <el-form-item>
-					<img class="validateImg" :src="imgSrc" @click="loadImg()">
-			    </el-form-item>
-			</el-col>
-			</el-form-item>
-			<el-form-item>
-			  <el-button style="width: 100%;" type="primary" @click="submitForm('ruleForm2')">登录</el-button>
-			</el-form-item>
-		</el-form>
+          margin:0 auto;
+          left: 0;
+          right: 0;
+          padding: 35px 35px 15px 35px;">
+          <el-form-item prop="username">
+            <el-input type="username" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.username" auto-complete="off" placeholder="用户名"></el-input>
+          </el-form-item>
+        <el-form-item prop="pass">
+          <el-input type="password" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.pass" auto-complete="off" placeholder="密码"></el-input>
+        </el-form-item>
+        <el-form-item>
+        <el-col :span="16">
+          <el-form-item prop="validate">
+            <el-input type="validate" @keyup.enter.native="submitForm('ruleForm2')" v-model="ruleForm2.validate" auto-complete="off" placeholder="验证码"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7" :offset="1">
+          <el-form-item>
+            <img class="validateImg" :src="imgSrc" @click="loadImg()">
+          </el-form-item>
+        </el-col>
+        </el-form-item>
+        <el-form-item>
+          <el-button style="width: 100%;" type="primary" @click="submitForm('ruleForm2')">登录</el-button>
+        </el-form-item>
+        <a @click="registe" style="color:white;cursor: pointer;">没有账号？</a>
+      </el-form>
+    </div>
+    <el-dialog></el-dialog>
 	</div>
 </template>
 <script>
@@ -104,11 +108,19 @@ import crypto from 'crypto'
 	    	this.$api.post('login', {flag: 'Login',zh:this.ruleForm2.username,mm:mm,yz:this.ruleForm2.validate}, r => {
                 this.$router.push({path: '/Pending',name: '待处理' })
 	        },f => {
-	        	alert(f.result)
+            this.loadImg()
+            this.$message({
+              type: 'warning',
+              message: f.result
+            });
 	        })
-	    }
+      },
+      registe() {
+        
+      }
     },
     created() {
+      document.title = "登录界面"
       this.$store.commit('changePrjID',null)
     	this.loadImg()
     }
