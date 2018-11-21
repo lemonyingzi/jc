@@ -144,10 +144,6 @@ function apiAxios (method, url, params, success, failure) {
     })
     .catch(function (err) {
         reject(err);
-        // let res = err.response
-        // if (err) {
-        //     window.alert('错误: ' + res.status)
-        // }
     })
     })
 }

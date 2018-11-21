@@ -90,6 +90,13 @@ import { smsClient } from '@/plugins/sms-sdk'
             })
         }
       };
+      var validatePass22 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入用户名'));
+        } else {
+          callback();
+        }
+      };
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入用户名'));
@@ -165,7 +172,7 @@ import { smsClient } from '@/plugins/sms-sdk'
             { validator: validatePass, trigger: 'blur' }
           ],
           username: [
-            { validator: validatePass2, trigger: 'blur' }
+            { validator: validatePass22, trigger: 'blur' }
           ],
           validate: [
             { validator: validatePass3, trigger: 'blur' }
@@ -198,6 +205,11 @@ import { smsClient } from '@/plugins/sms-sdk'
         disabled:true,
         error:''
       };
+    },
+    computed :{
+      ...mapGetters([
+        'prjID'
+      ])
     },
     methods: {
       validate(type,data) {
