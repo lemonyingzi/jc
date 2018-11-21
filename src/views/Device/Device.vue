@@ -6,18 +6,16 @@
         <div>
           <el-table :data="tableData" stripe style="width: 100%">
             <el-table-column type="index" label="序号" min-width="160"></el-table-column>
-            <el-table-column prop="prjName" label="类型" min-width="100"></el-table-column>
-            <el-table-column prop="SubmitTime" label="测点编号" min-width="100"></el-table-column>
-            <el-table-column prop="AuditTime" label="设备ID" min-width="100" max-width="20"></el-table-column>
-            <el-table-column prop="Analyst" label=" 
-  分析人员" min-width="100" max-width="20"></el-table-column>
-            <el-table-column prop="Audit" label="硬件版本号 
+            <el-table-column prop="Type" label="类型" min-width="100"></el-table-column>
+            <el-table-column prop="ProjectName" label="工程名称" min-width="100"></el-table-column>
+            <el-table-column prop="DeviceID" label="设备ID" min-width="100" max-width="20"></el-table-column>
+            <el-table-column prop="HardwareVersionNumber" label="硬件版本号 
   " min-width="100" max-width="20"></el-table-column>
-            <el-table-column prop="AuditResult" label="软件版本号" min-width="100"></el-table-column>
-            <el-table-column prop="AuditResult" label="设备状态" min-width="100"></el-table-column>
+            <el-table-column prop="SoftwareVersionNumber" label="软件版本号" min-width="100"></el-table-column>
+            <el-table-column prop="State" label="设备状态" min-width="100"></el-table-column>
           </el-table>
           <div class="pagination-container" style="margin-top: 20px;">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="params.page" :page-sizes="[10,20,30, 50]" :page-size="params.rows" layout="total, sizes, prev, pager, next, jumper" :total="total">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="params.page" :page-sizes="[10,20,30, 50]" :page-size="params.rows" layout="total, sizes, prev, pager, next, jumper" :total="Number(total)">
             </el-pagination>
           </div>
         </div>
@@ -32,9 +30,9 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
-        total: null,
+        total: Number,
       }
     },
     methods: {
@@ -44,7 +42,7 @@ export default {
           page :this.params.page,
           rows :this.params.rows
         }
-        this.$api.post('device/device', a, r => {
+        this.$api.post('device/device', a).then(r => {
           v.tableData = r.rows
           v.total = r.total
         })

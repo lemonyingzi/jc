@@ -7,7 +7,7 @@
           <el-table :data="tableData" stripe style="width: 100%">
             <el-table-column type="index" label="序号" min-width="160"></el-table-column>
             <template v-for="column in columns">
-              <el-table-column min-width="100" :prop='column.prop' :label='column.label'></el-table-column>
+              <el-table-column :key="column.label" min-width="100" :prop='column.prop' :label='column.label'></el-table-column>
             </template>
             <el-table-column prop="AuditResult" label="审核结果" min-width="100">
             </el-table-column>
@@ -73,7 +73,7 @@ export default {
         tableData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         total: null,
         columns: [{"prop":"prjName","label":"工程名称"},
@@ -104,13 +104,13 @@ export default {
           page :this.params.page,
           rows :this.params.rows
         }
-        this.$api.post('audit/audited', a, r => {
+        this.$api.post('audit/audited', a).then(r => {
           v.tableData = r.rows
           v.total = r.total
         })
       },
       ck(scope) {
-        this.$api.post('audit/auditedInfo',{reportID:scope.row.id},r => {
+        this.$api.post('audit/auditedInfo',{reportID:scope.row.id}).then(r => {
           this.dialogVisible = true
           this.form.Analyst = r.reportInfo.Analyst
           this.form.ReportTime = r.reportInfo.ReportTime
@@ -128,11 +128,12 @@ export default {
           confirmButtonText: '确定',
           type: 'warning'
         }).then(() => {
-          this.$api.post('audit/auditedInfoRes',{reportID:scope.row.id},r => {
+          this.$api.post('audit/auditedInfoRes',{reportID:scope.row.id}).then(r => {
             this.$message({
               type: 'success',
               message: '撤回成功!'
             });
+            this.loadData()
           })
         }).catch(() => {
           this.$message({

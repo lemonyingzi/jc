@@ -6,27 +6,24 @@ Vue.use(Router)
 
 export const MenuRouter = [
     {
-      path: '',
+      path: '/Login',
+      // redirect: 'Login',
+      component: () => import('@/views/Login/Login'),
+      name: '登录',
+      show: false,
+      children: []
+    },
+    {
+      path: '/Pending',
       component: Layout,
       redirect: 'Pending',
       meta:{icon:'daichuli'},
       children: [{
-      	path: 'Pending',
+      	path: '',
       	name: '待处理',
       	component: () => import('@/views/Pending/Pending'),
         meta:{icon:'daichuli'}
       }]
-    },
-    {
-      path: '/Login',
-      component: () => import('@/views/Login/Login'),
-      show: false
-      // children: [{
-      //   meta:{icon:'daichuli'},
-      //   path: 'Login',
-      //   name: '登录',
-      //   component: () => import('@/views/Login/Login'),
-      // }]
     },
     {
       path: '/Proj',
@@ -41,7 +38,7 @@ export const MenuRouter = [
       },{
       	path: 'CompletedProj',
       	name: '已完工',
-      	component: () => import('@/views/Pending/Pending'),
+      	component: () => import('@/views/Proj/CompletedProj'),
         meta:{icon:'yiwancheng'}
       },{
         path: 'ProjectManagement',
@@ -49,7 +46,7 @@ export const MenuRouter = [
         component: () => import('@/views/Proj/ProjectManagement'),
         meta:{icon:'gongchengguanli'}
       },{
-        path: 'ChildPrj/:id',
+        path: 'ChildPrj',
         name: '工程首页',
         show: false,
         component: () => import('@/views/Proj/ChildPrj')
@@ -85,6 +82,17 @@ export const MenuRouter = [
       }]
     },
     {
+      path: '/User',
+      component: Layout,
+      redirect: '/User/User',
+      show: false,
+      children: [{
+        path: 'User',
+        name: '用户',
+        component: () => import('@/views/User/User')
+      }]
+    },
+    {
       path: '/Report',
       component: Layout,
       show: false,
@@ -100,6 +108,10 @@ export const MenuRouter = [
           keepAlive:true
         },
         component: () => import('@/views/Report/NewReport_datatable')
+      },{
+        path: 'HistoryReport',
+        name: '历史报表',
+        component: () => import('@/views/Report/HistoryReport')
       },{
         path: 'NewReport_detail',
         name: '水位水准数据报表详情',

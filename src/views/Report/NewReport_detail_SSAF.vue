@@ -40,7 +40,7 @@
     <el-row :gutter="40">
       <el-col :xs="24" :sm="24" :lg="24">
         <div>
-          <el-table border :data="tableData1" stripe style="width: 100%;margin-top: 20px" :row-style="{height:'65px'}">
+          <el-table v-loading="loading" border :data="tableData1" stripe style="width: 100%;margin-top: 20px" :row-style="{height:'65px'}">
             <template v-for="column1 in columns2[value]">
               <template v-if="!column1.fix">
                 <el-table-column :label='column1.title'>
@@ -51,7 +51,7 @@
                         <template v-if="!scope.row.editable">
                           <div style="width: 100%" @click="toggle(scope,scope.row[column2.field])">{{ scope.row[column2.field] }}</div>
                         </template>
-                        <template v-else>
+                        <template v-else="scope.row.editable">
                           <el-input ref="mark" @blur="onBlur(scope,column2)" v-model="value6">
                           </el-input >
                         </template>
@@ -75,7 +75,7 @@
             </el-pagination>
           </div>
           <div style="margin-top: 20px;float: right;">
-            <el-button type="success" @click="search">保存数据分析并返回</el-button>
+            <el-button v-if="saveFlag" type="success" @click="search">保存数据分析并返回</el-button>
             <el-button @click="search">取消</el-button>
             <el-button @click="search">导出ECXEL</el-button>
           </div>
@@ -94,13 +94,14 @@ export default {
         chartData: [],
         params: {
           page: 1,
-          rows: 5
+          rows: 10
         },
         value6:'',
         changeRowArr:[],
         date1: [],
         total: null,
         title: '',
+        loading:false,
         columns1: {
             "钢支撑轴力": {
                 title: "钢支撑轴力监测点数据汇总",
@@ -133,13 +134,13 @@ export default {
             column: [
               { "field": "MeasureDate", "title": "测量时间", "width": "100" },
               { "field": "OriginalFreq", "title": "测量频率", "width": "100" },
-              { "field": "AnalysisData", "title": "轴力值(kN)", "width": "120" }
+              { "field": "OriginalData", "title": "轴力值(kN)", "width": "120" }
             ]
           },{
             title: "分析数据",
             column: [
               { "field": "MeasureDate", "title": "测量时间", "width": "80" },
-              { "field": "OriginalFreq", "title": "测量频率", "width": "80" ,editor:true},
+              { "field": "AnalysisFreq", "title": "测量频率", "width": "80" ,editor:true},
               { "field": "AnalysisData", "title": "轴力值(kN)", "width": "120" }
             ]
           }]
@@ -226,8 +227,11 @@ export default {
         });
       },
       onBlur(scope,column2) {
-        if (Number.isInteger(Number(this.value6))) {
-          scope.row[column2.field] = this.value6
+        if (!isNaN(this.value6)) {
+          if(scope.row[column2.field] !== this.value6){
+            this.upDate(scope,this.value6)
+            scope.row[column2.field] = this.value6
+          }
         }else{
           this.$message({
             type: 'warning',
@@ -242,10 +246,12 @@ export default {
         }
       },
       toggle(scope,data) {
-        scope.row.editable = !scope.row.editable
-        this.value6 = data
+        if(scope.row.MeasureDate < this.tableData[0].TheLastMeasurementDate&&saveFlag){
+          return false
+        }
+        scope.row.editable = !scope.row.editable;
+        this.value6 = data;
         this.$nextTick(function(){
-          console.log(this.$refs.mark[this.$refs.mark.length-1].$el.querySelector("input"))
           this.$refs.mark[this.$refs.mark.length-1].$el.querySelector("input").focus()
         })
       },
@@ -256,12 +262,28 @@ export default {
           startTime: this.date1[0],
           endTime: this.date1[1]
         }
-        this.$api.post('report/pointChart', p, r => {
+        this.$api.post('report/pointChart', p).then( r => {
           this.chartData = r.data
           this.drawLine()
         })
       },
+      upDate(scope,data) {
+        var p = {
+          type: this.value,
+          id: this.tableData[0].id,
+          measureDate: scope.row.MeasureDate,
+          analysisData: data
+        }
+        this.$api.post('report/modifyDetail', p).then( r => {
+          if(r.summary){
+            this.tableData[0].ThisAxialForce = r.summary.ThisAxialForce
+            this.tableData[0].ThisChanges = r.summary.ThisChanges
+            scope.row.AnalysisData = r.AnalysisData
+          }
+        })
+      },
       loadData() {
+        this.loading = true
         var v = this
         var p = {
           page :this.params.page,
@@ -271,12 +293,13 @@ export default {
           startTime: this.date1[0],
           endTime: this.date1[1]
         }
-        this.$api.post('report/pointData', p, r => {
+        this.$api.post('report/pointData', p).then( r => {
           for(var i in r.rows){
             r.rows[i].editable = false
           }
           v.tableData1 = r.rows
           v.total = r.total
+          this.loading = false
         })
       },
       search() {
@@ -290,6 +313,11 @@ export default {
       handleCurrentChange (val){
         this.params.page = val
         this.loadData()
+      }
+    },
+    computed:{
+      saveFlag() {
+        return JSON.parse(sessionStorage.getItem("c")).page
       }
     },
     mounted(){

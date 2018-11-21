@@ -1,22 +1,22 @@
 <template>
   <div>
-    <page-title>在建工程</page-title>
+    <page-title>历史报表</page-title>
     <el-row :gutter="40">
       <el-col :xs="24" :sm="24" :lg="24">
         <div>
-          <el-table :sort-orders="['ascending', 'descending']" :default-sort = "{prop: 'prjState', order: 'ascending'}" :data="tableData" stripe style="width: 100%">
+          <el-table :data="tableData" stripe style="width: 100%">
             <el-table-column type="index" label="序号" min-width="160"></el-table-column>
-            <el-table-column :sort-by="['在线，正常','在线，异常','离线，正常','离线，异常']" :sortable="true"  prop="prjState" label="状态" min-width="100"></el-table-column>
+            <el-table-column prop="prjState" label="提交时间" min-width="100"></el-table-column>
             <el-table-column prop="ProjectName" label=" 
-  工程名称" min-width="100"></el-table-column>
-            <el-table-column prop="SampleNum" label="工程编号" min-width="100" max-width="20"></el-table-column>
+  分析人员" min-width="100"></el-table-column>
+            <el-table-column prop="SampleNum" label="审核人员" min-width="100" max-width="20"></el-table-column>
             <el-table-column prop="ConstructUnit" label=" 
-  建设单位" min-width="100" max-width="20"></el-table-column>
+  审核时间" min-width="100" max-width="20"></el-table-column>
             <el-table-column prop="StartTime" label="开始时间 
   " min-width="100" max-width="20"></el-table-column>
-            <el-table-column prop="act" label="查看详情" min-width="100">
+            <el-table-column prop="act" label="审核结果" min-width="100">
               <template slot-scope="scope">
-                <el-button @click="cz(scope)"  size="mini">立即处理</el-button>
+                <el-button @click="cz(scope)"  size="mini">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
