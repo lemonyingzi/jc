@@ -24,7 +24,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="注册" :visible.sync="dialogVisible" width="750px">
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="750px">
       <el-form label-position="left" v-model="form" label-width="90px">
         <el-col :span="12">
           <el-form-item label="任务名称：">
@@ -48,7 +48,8 @@
               <el-col :span="24" style="margin-top: 10px;">频率：<el-input-number v-model="num" :min="1"></el-input-number>&nbsp;分钟/一次
               </el-col>
             </el-tab-pane>
-            <el-tab-pane label="每天" name="每天">每隔一天发生一次</el-tab-pane>
+            <el-tab-pane label="每天" name="每天">每隔一天发送一次</el-tab-pane>
+            <!-- 每天两次（上午：4:00；下午：18:00） -->
             <el-tab-pane label="每周" name="每周" style="margin-left: 20px;">
               <el-checkbox :indeterminate="isIndeterminate" v-model="form.checkAll" @change="handleCheckAllChange">全选</el-checkbox>
               <div style="margin: 15px 0;"></div>
@@ -84,7 +85,7 @@
       </el-form>
       <div style="clear: both;text-align: center;">
         <el-button style="margin-top: 10px;" @click="qr" type="success">确定</el-button>
-        <el-button style="margin-top: 10px;" @click="del" type="danger">删除</el-button>
+        <el-button v-if="flag!=='Add'" style="margin-top: 10px;" @click="del" type="danger">删除</el-button>
       </div>
       </el-dialog>
   </div>
@@ -132,15 +133,17 @@ export default {
         num:"60",
         Weekoption: ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
         isIndeterminate: true,
+        title:'新增任务'
       }
     },
     methods: {
       newTask() {
+        this.title = "新增任务"
         this.dialogVisible = true
         this.flag = "Add"
         this.form.value = ["采集","全部"]
         this.form.switch = true
-        this.form.TaskName = "未命名"
+        // this.form.TaskName = "未命名"
         this.form.TabName = "每天"
         this.num = ""
         this.form.checkAll = []
@@ -202,6 +205,7 @@ export default {
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.Weekoption.length;
       },
       edit(scope) {
+        this.title = "修改任务"
         this.flag = "Update"
         var time = scope.row.Time
         var type = time.slice(0, 2);
@@ -273,7 +277,15 @@ export default {
         });
       },
       qr() {
-        if(this.form.Time === ""){
+        console.log(this.form.Time)
+        if(this.form.TaskName === ""||this.form.TaskName === null){
+          this.$message({
+            type: 'info',
+            message: '任务名称不可为空'
+          });
+          return
+        }
+        if(this.form.Time === ""||this.form.Time === null){
           this.$message({
             type: 'info',
             message: '日期不可为空'
@@ -299,13 +311,13 @@ export default {
         }else if(this.form.TabName === "每周"){
           Time = this.form.TabName + this.form.Weeks.join(",") + "," + this.form.Time.slice(11,21) + ",开始时间:" + this.form.Time.slice(0,10)
         }else{
-          Time = this.form.TabName + this.form.Time + ",间隔时间:" + this.num
+          Time = this.form.TabName + this.form.Time + ",间隔时间：" + this.num
         }
         p.data.Time = Time
         p.data.Operation = this.form.value.join(",")
         p.data.State = this.form.switch === true?"启用":"暂停"
         p.data = JSON.stringify(p.data)
-        this.$api.post('/task/taskCtrl',p,r => {
+        this.$api.post('/task/taskCtrl',p).then(r => {
           this.dialogVisible = !this.dialogVisible
           this.loadData()
           this.$message({

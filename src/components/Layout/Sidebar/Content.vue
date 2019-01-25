@@ -2,7 +2,10 @@
   <div class="menu-wrapper">
     <template v-for="item in jcd">
       <el-submenu v-if="item.children" :index="item.id" :key="item.id">
-        <template slot="title">{{item.title}}</template>
+        <template slot="title">
+          <Icon :className="'monitoringpoint'"></Icon>
+          <span>{{item.title}}</span>
+        </template>
         <template v-for="child in item.children">
           <el-submenu :index="child.id" :key="child.id" v-if="child.children">
             <template slot="title">
@@ -38,12 +41,14 @@
     <router-link :to="'/Task/Task'">
       <el-menu-item index="'-1'">
         <template slot="title">
+          <Icon :className="'renwu'"></Icon>
           <span>任务</span>
         </template>
       </el-menu-item>
     </router-link>
     <el-submenu index="'-4'">
       <template slot="title">
+        <Icon :className="'ccgl-baobiao-8'"></Icon>
         <span>报表</span>
       </template>
       <router-link :to="'/Report/NewReport'">

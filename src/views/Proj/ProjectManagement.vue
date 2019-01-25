@@ -24,7 +24,7 @@
       </el-col>
     </el-row>
     <el-dialog :title="title" :visible.sync="dialogVisible" width="580px">
-      <el-form ref="formLabelAlign" :rules="rule" :model="formLabelAlign" size="mini" style="overflow: hidden;">
+      <el-form :disabled="formDis" ref="formLabelAlign" :rules="rule" :model="formLabelAlign" size="mini" style="overflow: hidden;">
         <el-radio-group style="width: 190px;float: left;">
           <el-form-item prop="ProjectName" label="工程名称">
             <el-input @keyup.enter.native="submitForm('formLabelAlign')" v-model="formLabelAlign.ProjectName"></el-input>
@@ -42,7 +42,7 @@
             <el-input @keyup.enter.native="submitForm('formLabelAlign')" v-model="formLabelAlign.SampleNum"></el-input>
           </el-form-item>
           <!-- ref="formLabelAlign" -->
-        <el-form ref="formLabelAlign" :rules="rule" :inline="true" label-position="top" size="mini" style="margin-top: 20px;">
+        <el-form :disabled="formDis" ref="formLabelAlign" :rules="rule" :inline="true" label-position="top" size="mini" style="margin-top: 20px;">
           <el-radio-group style="width: 300px;float: left;border-top: 1px #ddd solid;">
             <el-form-item prop="StartTime" label="选择日期">
               <el-date-picker @keyup.enter.native="submitForm('formLabelAlign')" :disabled="title==='工程信息'" format="yyyy-MM-dd hh:mm:ss" value-format="yyyy-MM-dd hh-mm-ss" v-model="formLabelAlign.StartTime" type="datetime" style="width: 190px"></el-date-picker>
@@ -102,23 +102,23 @@
       <div style="text-align: center;margin-top: 15px;border-top: 1px #ddd solid;padding-top: 15px;">
         <div style="margin-bottom: 15px;">
         自动生成报表时间：
-        <el-radio v-model="radio" label="1">日报</el-radio>
-        <el-radio v-model="radio" label="2">周报，每周
-          <template>
-            <el-select placeholder="" style="width: 60px" v-model="week">
-                <el-option
-                  v-for="item in weeks"
-                  :key="item.id"
-                  :label="item.text"
-                  :value="item.text">
-                </el-option>
-              </el-select>
-          </template>生成
-        </el-radio>
-  <el-radio v-model="radio" label="3">无</el-radio>
+          <el-radio :disabled="formDis" v-model="radio" label="1">日报</el-radio>
+          <el-radio :disabled="formDis" v-model="radio" label="2">周报，每周
+            <template>
+              <el-select :disabled="formDis" style="width: 60px" v-model="week">
+                  <el-option
+                    v-for="item in weeks"
+                    :key="item.id"
+                    :label="item.text"
+                    :value="item.text">
+                  </el-option>
+                </el-select>
+            </template>生成
+          </el-radio>
+          <el-radio :disabled="formDis" v-model="radio" label="3">无</el-radio>
         </div>
         <el-button  @click="submitForm('formLabelAlign')" type="success">确定</el-button>
-        <el-button v-if="title==='工程信息'" @click="pz()" type="danger">结束工程</el-button>
+        <el-button v-if="title==='工程信息'&&!formDis" @click="end()" type="danger">结束工程</el-button>
       </div>
     </el-dialog>
   </div>
@@ -231,7 +231,8 @@ export default {
       auditor:'',
       analystOptions:[],
       auditorOptions:[],
-      id:''
+      id:'',
+      formDis:false
     }
   },
   methods: {
@@ -257,6 +258,7 @@ export default {
     },
     rowDblclick(row,evevt) {
       this.dialogVisible = true
+      this.formDis = row.ProjectState === '完工'?true:false
       this.title = '工程信息'
       this.id = row.id
       var a = {
@@ -307,7 +309,9 @@ export default {
     },
     qd() {
       this.dialogVisible = false
-      var a = {
+      if(this.formDis === true)
+      return
+      let a = {
         data:this.formLabelAlign
       }
       a.flag = this.title === '新建工程'?'insert':'update'
@@ -329,6 +333,29 @@ export default {
           type: 'success'
         });
         this.loadData()
+      })
+    },
+    end() {
+      this.$confirm('确定结束该任务?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+          let a = {
+            flag :'finish',
+            id: this.id
+          }
+          this.$api.post('prj/childPrjManagement', a).then( r =>{
+            this.$message({
+              message: '结束成功',
+              type: 'success'
+            });
+            this.dialogVisible = false
+            this.loadData()
+          })
+        }
+      ).catch(() => {
+        return
       })
     }
   },

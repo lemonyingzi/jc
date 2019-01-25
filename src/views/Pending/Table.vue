@@ -25,7 +25,7 @@
         tableData: [],
         params: {
           page: 1,
-          size: 20
+          rows: 10
         },
         total: null,
       }
@@ -50,7 +50,7 @@
         }
       },
       handleSizeChange(val) {
-        this.params.size = val
+        this.params.rows = val
         this.loadData()
       },
       handleCurrentChange (val){

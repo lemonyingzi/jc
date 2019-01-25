@@ -29,7 +29,7 @@ export const MenuRouter = [
       path: '/Proj',
       component: Layout,
       name: '工程',
-      meta:{icon:'gongcheng'},
+      meta:{icon:'shigonglan'},
       children: [{
       	path: 'BuildingProj',
       	name: '在建',
@@ -56,7 +56,7 @@ export const MenuRouter = [
       path: '/Audit',
       component: Layout,
       name: '审核批准',
-      meta:{icon:'shenhe'},
+      meta:{icon:'auditing'},
       children: [{
         path: 'UncompletedAudit',
         name: '未审核',
@@ -72,10 +72,10 @@ export const MenuRouter = [
     {
       path: '/Device',
       component: Layout,
-      redirect: '/Device/Device',
+      redirect: '/Device',
       meta:{icon:'shebei'},
       children: [{
-        path: 'Device',
+        path: '',
         name: '设备',
         component: () => import('@/views/Device/Device'),
         meta:{icon:'shebei'}

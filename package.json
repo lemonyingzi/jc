@@ -18,10 +18,12 @@
     "babel-polyfill": "^6.26.0",
     "echarts": "^4.2.0-rc.1",
     "element-ui": "^2.4.5",
+    "file-saver": "^2.0.0",
     "mysql": "^2.16.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "xlsx": "^0.14.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -77,6 +77,7 @@ axios.interceptors.response.use(
         return response;
     },
     error => {
+        tryHideFullScreenLoading()
         return Promise.reject(error)
     }
 )
@@ -124,7 +125,7 @@ function apiAxios (method, url, params, success, failure) {
         baseURL: root,
         withCredentials: false
     }).then(function (res) {
-    if (Number(res.data.state) === 0) {
+    if (res.data&&Number(res.data.state) === 0) {
         // if (success) {
             resolve(res.data)
         // }

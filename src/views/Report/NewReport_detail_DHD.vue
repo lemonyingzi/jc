@@ -374,7 +374,7 @@ export default {
       this.date1 = [start, end]
       this.value = sessionStorage.getItem("type")
       this.tableData.push(JSON.parse(sessionStorage.getItem("table")))
-      this.title = this.tableData[0].MonitorPointPart+this.value+"监测点"
+      this.title = this.tableData[0].MeasurePointNum+this.value+"监测点"
     }
   }
 </script>

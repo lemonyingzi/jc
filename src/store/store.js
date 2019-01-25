@@ -10,14 +10,16 @@ export default new Vuex.Store({
    	prjID:null,
     ID:null,
     Type:[],
-    dbClickFalse:false
+    page:'/Proj',
+    MonitorPointType:[]
   },
   getters :{
    	MenuRouter :state => state.MenuRouter,
     prjID :state => state.prjID,
     ID :state => state.ID,
     Type :state => state.Type,
-    dbClickFalse :state => state.dbClickFalse,
+    page :state => state.page,
+    MonitorPointType :state => state.MonitorPointType
   },
   mutations :{
     changePrjID(state, prjID) {
@@ -29,8 +31,11 @@ export default new Vuex.Store({
     changeID(state, ID) {
       state.ID = ID
     },
-    changeDbClickFalse(state) {
-      state.dbClickFalse = !state.dbClickFalse
+    changepage(state,page) {
+      state.page = page
+    },
+    changeMonitorPointType(state,Type) {
+      state.MonitorPointType = Type
     }
   }
 })

@@ -1,14 +1,17 @@
 <template>
-  <el-menu mode="horizontal" background-color="#293c5C"
+  <el-menu :default-active="this.$route.path" mode="horizontal" background-color="#293c5C"
   text-color="#fff"
   active-text-color="#ffd04b" style="background:#293c5C;">
     
   <!-- active-text-color="#ffd04b" -->
     <template v-for="item in routers">
-      <el-submenu v-if="item.children.length>1&&item.show != false" :index="item.path">
-        <template :index="item.path" slot="title"><Icon :className="item.meta.icon"></Icon>{{item.name}}</template>
+      <el-submenu v-if="item.children.length>1&&item.show != false" :index="item.path" :key="item.path">
+        <template :index="item.path" slot="title">
+          <Icon :className="item.meta.icon"></Icon>
+          <span style="margin-left:1px;">{{item.name}}</span>
+        </template>
         <template v-for="child in item.children">
-          <router-link :to="item.path+'/'+child.path">
+          <router-link :key="child.path" :to="item.path+'/'+child.path">
             <el-menu-item :index="item.path+'/'+child.path" :key="item.path" v-if="child.show != false">
               <template slot="title">
                 <Icon :className="child.meta.icon"></Icon>
@@ -17,24 +20,24 @@
             </el-menu-item>
           </router-link>
         </template>
-      </el-submenu> 
+      </el-submenu>
       <template v-else-if="item.children.length<=1&&item.show != false">
         <template v-for="child in item.children">
           <el-menu-item ref='nav' @click="go(item)" :index="item.path+'/'+child.path" :key="item.path">
-              <template slot="title">
-            <router-link :to="item.path+'/'+child.path">
+            <template slot="title">
+              <router-link :to="item.path+'/'+child.path">
                 <Icon :className="child.meta.icon"></Icon>
                 <span>{{ child.name }}</span>
-            </router-link>
-              </template>
+              </router-link>
+            </template>
           </el-menu-item>
         </template>
       </template>
     </template>
   </el-menu>
 </template>
-
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Content',
   props:{

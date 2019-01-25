@@ -34,7 +34,7 @@
             </el-date-picker>
             <el-select v-model="value7" placeholder="请选择">
               <el-option
-                v-for="(item,key,index) in tableData[0].channel"
+                v-for="(item,key,index) in channelOptions"
                 :key="index"
                 :label="item.Channel"
                 :value="item.Channel">
@@ -88,7 +88,7 @@
             </el-pagination>
           </div>
           <div style="margin-top: 20px;float: right;">
-            <el-button v-if="saveFlag" type="success" @click="search">保存数据分析并返回</el-button>
+            <el-button v-if="saveFlag" type="success" @click="save">保存数据分析并返回</el-button>
             <el-button @click="search">取消</el-button>
             <el-button @click="search">导出ECXEL</el-button>
           </div>
@@ -209,11 +209,17 @@ export default {
           }]
         },
         row:'',
-        value: ''
+        value: '',
+        channelOptions:[]
       }
     },
     methods: {
       drawLine(){
+        let arr = []
+        for(let i in this.chartData[0]){
+          arr.push({ type: 'line' })
+        }
+        arr.splice(1,1)
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart'))
         // 绘制图表
@@ -239,16 +245,13 @@ export default {
           },
           xAxis: { type: 'category' },
           yAxis: {},
-          series: [
-              { type: 'line' },
-              { type: 'line' }
-          ]
+          series: arr
         });
       },
       onBlur(scope,column2) {
         if (!isNaN(this.value6)) {
           if(scope.row[column2.field] !== this.value6){
-            this.upDate(scope,this.value6)
+            this.upDate(Num(scope,this.value6))
             scope.row[column2.field] = this.value6
           }
         }else{
@@ -296,7 +299,7 @@ export default {
           id: this.tableData[0].id,
           startTime: this.date1[0],
           endTime: this.date1[1],
-          channel:this.value7
+          channel:this.value7 === '全部'?'All':this.value7
         }
         this.$api.post('report/pointChart', p).then( r => {
           this.chartData = r.data
@@ -313,7 +316,7 @@ export default {
           id: this.tableData[0].id,
           startTime: this.date1[0],
           endTime: this.date1[1],
-          channel:this.value7
+          channel:this.value7 === '全部'?'All':this.value7
         }
         this.$api.post('report/pointData', p).then( r => {
           for(var i in r.rows){
@@ -335,6 +338,18 @@ export default {
       handleCurrentChange (val){
         this.params.page = val
         this.loadData()
+      },
+      save() {
+        // var p = {
+        //   type: this.value,
+        //   id: this.tableData[0].id,
+        //   measureDate
+        //   analysisData
+        // }
+        // this.$api.post('report/pointChart', p).then( r => {
+        //   this.chartData = r.data
+        //   this.drawLine()
+        // })
       }
     },
     mounted(){
@@ -352,8 +367,10 @@ export default {
       this.date1 = [start, end]
       this.value = sessionStorage.getItem("type")
       this.tableData.push(JSON.parse(sessionStorage.getItem("table")))
-      this.value7 = this.tableData[0].channel[0].Channel
-      this.title = this.tableData[0].MonitorPointPart+this.value+"监测点"
+      this.channelOptions = Array.from(this.tableData[0].channel)
+      this.channelOptions.push({'Channel':'全部'})
+      this.value7 = this.channelOptions[0].Channel
+      this.title = this.tableData[0].MeasurePointNum+this.value+"监测点"
     }
   }
 </script>

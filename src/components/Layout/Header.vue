@@ -1,7 +1,15 @@
 <template>
   <el-container>
-    <el-header style="text-align: right;height: 98px;background: #dedede;">
-      <div class="HeaderRight">
+    <el-header style="text-align: right;height: 98px;background: #dedede;padding-left:0px;">
+      <!-- <div style="float:left;cursor: pointer;width:50%;">
+        
+      </div> -->
+      <div style="position:absolute;left:250px;">
+        <a target="_blank" href="https://shop515726526.taobao.com/">
+          <img style="height:98px;" src="@/assets/guanggao.gif" />
+        </a>
+      </div>
+      <div class="HeaderRight" style="position:absolute;height:98px;right:0px;">
         <div v-on:click="Homepage()">
           <Icon :url="src[0]"></Icon>
         </div>
@@ -132,10 +140,10 @@ export default {
      height: 100%;
    }*/
    .HeaderRight {
-      min-width: 300px;
       height: 100%;
       justify-content: flex-end;
       display: flex;
       align-items:center;/*垂直居中*/
+      background: rgb(222, 222, 222)
    }
 </style>

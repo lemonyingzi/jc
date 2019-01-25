@@ -134,14 +134,9 @@ export default {
     },
     methods: {
       loadData() {
-        var v = this
-        var a = {
-          page :this.params.page,
-          rows :this.params.rows
-        }
-        this.$api.post('audit/unAudit', a, r => {
-          v.tableData = r.rows
-          v.total = Number(r.total)
+        this.$api.post('audit/unAudit', {page :this.params.page,rows :this.params.rows}).then(r => {
+          this.tableData = r.rows
+          this.total = Number(r.total)
         })
         return Promise.resolve()
       },

@@ -56,11 +56,12 @@ export default {
         let p = this.multipleSelection.map((item,index,arr) => {
           return  { "MonitorPointType": item.Type, "MeasurePointNumber": item.MeasurePointNumber }
         })
-        p = p.reduce((item, next) => {
+        let arr = p.reduce((item, next) => {
           hash[next.MonitorPointType] ? '' : hash[next.MonitorPointType] = true && item.push(next);
           return item 
         }, []) 
         p = JSON.stringify(p)
+        arr = JSON.stringify(arr)
         this.$api.post('report/create', {data:p}).then( r => {
           this.$message({
             type: 'success',
@@ -68,7 +69,7 @@ export default {
           });
           //直接跳转到数据汇总
           this.$router.push({path:'Audit/NewReport_datatable',name: '数据报表',params:{id: r.reportID}})
-          sessionStorage.setItem("a",p)
+          sessionStorage.setItem("a",arr)
           sessionStorage.setItem("c",JSON.stringify({flag:true,page:true}))
         })
       },

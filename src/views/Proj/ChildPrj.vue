@@ -2,38 +2,65 @@
   <div>
       <page-title style="margin-bottom: 120px;">{{ ProjectName }}</page-title>
       <div>
-        <el-card style="width: 20%;text-align: center;float: left;margin-right: 20px" class="box-card">
+        <el-row :gutter="10">
+          <el-col :lg="12" :md="24" :xs="24">
+          <el-col :lg="10" :md="12" :xs="12" :sm="12">
+        <el-card style="text-align: center;float: left;margin-right: 10px;" class="box-card">
           <div slot="header" class="clearfix">
             <span>{{ "远程状态：" + title_1 }}</span>
           </div>
-          <div style="font-size: 14px">{{ content_1}}</div>
+          <div style="font-size: 14px;height:40px;">{{ content_1}}</div>
           <div v-if="title_1 === '在线'&&remoteInfo.type==='repeater'" style="font-size: 14px"><img style="vertical-align: middle;" 
 
 :src="'/static/'+remoteInfo.BatteryImage" />
           {{remoteInfo.PowerBattery+remoteInfo.PowerState}}
           </div>
+          <!-- <span>&nbsp;</span> -->
         </el-card>
-        <el-card style="width: 20%;margin-top: 20px;text-align: center;" class="box-card">
+          </el-col>
+          <el-col :lg="10" :md="12" :xs="12" :sm="12">
+        <el-card style="text-align: center;margin-left: 10px;" class="box-card">
           <div slot="header" class="clearfix">
             <span>{{ "监测点状态：" + title_2 }}</span>
           </div>
           <div style="font-size: 14px">{{ "监测点总数：" + content_2 }}</div>
           <div style="font-size: 14px">{{ "异常监测点总数：" + content_3 }}</div>
         </el-card>
-      </div>
-      <div style="background:#eeeff2;text-align:left;margin:5px 20px 5px 0;padding-left:10px;font-size:16px;height:40px;line-height:40px;margin-
-
-top:60px;position:relative;margin-top:60px;">详细数据
-        <div style="float: right;position: absolute;right:10px;top: -120px">
-          <el-row :gutter="10">
-          <el-col :lg="6" :md="6" :xs="6"><btn :src="src[0]" :url="url[0]" :title="'监测点'"></btn></el-col>
-          <el-col :lg="6" :md="6" :xs="6"><btn :src="src[1]" :url="url[1]" :title="'任务'"></btn></el-col>
-          <el-col :lg="6" :md="6" :xs="6"><btn :src="src[2]" :url="url[2]" :title="'生成报表'"></btn></el-col>
-          <span @click="sz()"><el-col :lg="6" :md="6" :xs="6">
-            <btn :src="''" :url="url[3]" :title="'设置'"></btn>
-          </el-col></span>
+          </el-col>
+          </el-col>
+        <!-- <div style="float: right;position: relative;right:20px;top: -70px"> -->
+          <!-- <div> -->
+          <el-col :lg="12" :md="24" :xs="12" :sm="18">
+            <div class="blank"></div>
+            <div style="display:flex;justify-content: flex-end;">
+              <!-- position: absolute;bottom:-40px;right:0px; -->
+            <!-- <div style="height:60px;"></div> -->
+              <!-- <el-col :lg="12" :md="24" :xs="24"> -->
+                <!-- <el-col :lg="12" :md="12" :xs="12"> -->
+                  <btn :src="src[0]" :url="url[0]" :title="'监测点'"></btn>
+                <!-- </el-col> -->
+                <!-- <el-col :lg="12" :md="12" :xs="12"> -->
+                  <btn :src="src[1]" :url="url[1]" :title="'任务'"></btn>
+                <!-- </el-col> -->
+              <!-- </el-col> -->
+              <!-- <el-col :lg="12" :md="24" :xs="24"> -->
+                <!-- <el-col :lg="12" :md="12" :xs="12"> -->
+                  <btn :src="src[2]" :url="url[2]" :title="'生成报表'"></btn>
+                <!-- </el-col> -->
+                <!-- <el-col :lg="12" :md="12" :xs="12"><span @click="sz()"> -->
+                  <btn :src="''" :url="url[3]" :title="'设置'"></btn>
+                <!-- </span></el-col> -->
+              <!-- </el-col> -->
+            </div>
+          </el-col>
           </el-row>
-        </div>
+          <!-- </div> -->
+        <!-- </div> -->
+      </div>
+      <div style="background:#eeeff2;text-align:left;margin:20px 0px 5px 0;padding-left:10px;font-size:16px;height:40px;line-height:40px;position:relative;">详细数据
+        <!-- <div style="float: right;position: absolute;right:10px;top: -120px"> -->
+          
+        <!-- </div> -->
       </div>
       <div style="text-align: center;">
         <table style="width: 100%;line-height: 30px;margin-top: 30px;text-align: left;">
@@ -241,5 +268,21 @@ export default {
 </script>
 
 <style scoped>
+.el-col {
+  margin-bottom: 20px;
+  /* &:last-child {
+    margin-bottom: 0;
+  } */
+}
+@media only screen and (min-width: 1200px){
+  .blank {
+      height: 80px;
+  }
+}
+/* @media only screen and (min-width: 992px){
+  .blank {
+      height: 80px;
+  }
+} */
 
 </style>

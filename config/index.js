@@ -12,11 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/mod/**': {
-<<<<<<< HEAD
           target: 'http://192.168.9.31:8082',  //目标接口域名
-=======
-          target: 'http://192.168.9.31:8082/',  //目标接口域名
->>>>>>> 8fc6b7f98e0b4a15897dfbe4465459631edff2e1
           changeOrigin: true,  //是否跨域
           // pathRewrite: {
           //   '^/api': '/mod/menu.aspx'   //重写接口
