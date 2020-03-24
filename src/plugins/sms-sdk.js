@@ -4,16 +4,16 @@
  */
 const SMSClient = require('@alicloud/sms-sdk')
 // ACCESS_KEY_ID/ACCESS_KEY_SECRET 根据实际申请的账号信息进行替换
-const accessKeyId = 'LTAI4SpoUANz8PO9'
-const secretAccessKey = 'dLv0mtmerNnwBwYcbFenae1cx796Hh'
+const accessKeyId = '**********'
+const secretAccessKey = '**********'
 //初始化sms_client
 let smsClient = new SMSClient({accessKeyId, secretAccessKey})
 //发送短信
 // smsClient.sendSMS({
-//     PhoneNumbers: '17640390054',
-//     SignName: '建研院',
-//     TemplateCode: 'SMS_151231866',
-//     TemplateParam: '{"code":"4008008820DHC"}'
+//     PhoneNumbers: '***',
+//     SignName: '***',
+//     TemplateCode: '***',
+//     TemplateParam: '{"code":"***"}'
 // }).then(function (res) {
 //     let {Code}=res
 //     if (Code === 'OK') {
